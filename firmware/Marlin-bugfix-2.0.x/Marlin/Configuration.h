@@ -642,14 +642,14 @@
  *          TMC5160, TMC5160_STANDALONE
  * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'L6470', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
  */
-#define X_DRIVER_TYPE  TMC2208_STANDALONE
-#define Y_DRIVER_TYPE  TMC2208_STANDALONE
-#define Z_DRIVER_TYPE  TMC2208_STANDALONE
+#define X_DRIVER_TYPE  TMC2208
+#define Y_DRIVER_TYPE  TMC2208
+#define Z_DRIVER_TYPE  TMC2208
 //#define X2_DRIVER_TYPE A4988
 //#define Y2_DRIVER_TYPE A4988
 //#define Z2_DRIVER_TYPE A4988
 //#define Z3_DRIVER_TYPE A4988
-#define E0_DRIVER_TYPE TMC2208_STANDALONE
+#define E0_DRIVER_TYPE  TMC2208
 //#define E1_DRIVER_TYPE A4988
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
@@ -1001,15 +1001,15 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 170
-#define Y_BED_SIZE 170
+#define X_BED_SIZE 150
+#define Y_BED_SIZE 160
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS 0
-#define Y_MIN_POS 0
+#define X_MIN_POS -40
+#define Y_MIN_POS -20
 #define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
+#define X_MAX_POS 185 //X_BED_SIZE
+#define Y_MAX_POS 180 //Y_BED_SIZE
 #define Z_MAX_POS 185
 
 /**
@@ -1162,11 +1162,22 @@
   #define GRID_MAX_POINTS_X 3
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
+  /*
+  *      +-- BACK ---+
+  *      |           |
+  *    L |    (+) P  | R <-- probe (20,20)
+  *    E |           | I
+  *    F | (-) N (+) | G <-- nozzle (10,10)
+  *    T |           | H
+  *      |    (-)    | T
+  *      |           |
+  *      +-- FRONT --0
+  */
   // Set the boundaries for probing (where the probe can reach).
   #define LEFT_PROBE_BED_POSITION 40 //MIN_PROBE_EDG
-  #define RIGHT_PROBE_BED_POSITION 170 //(X_BED_SIZE - (MIN_PROBE_EDGE))
+  #define RIGHT_PROBE_BED_POSITION (X_MAX_POS - 40) //(X_BED_SIZE - (MIN_PROBE_EDGE))
   #define FRONT_PROBE_BED_POSITION 0 //MIN_PROBE_EDGE
-  #define BACK_PROBE_BED_POSITION 170 //(Y_BED_SIZE - (MIN_PROBE_EDGE))
+  #define BACK_PROBE_BED_POSITION (Y_MAX_POS - (20)) //(Y_BED_SIZE - (MIN_PROBE_EDGE))
 
   // Probe along the Y axis, advancing X after each column
   //#define PROBE_Y_FIRST
@@ -1226,12 +1237,12 @@
  * Override if the automatically selected points are inadequate.
  */
 #if EITHER(AUTO_BED_LEVELING_3POINT, AUTO_BED_LEVELING_UBL)
-  #define PROBE_PT_1_X 35
-  #define PROBE_PT_1_Y 20
-  #define PROBE_PT_2_X 60
-  #define PROBE_PT_2_Y 20
-  #define PROBE_PT_3_X 170
-  #define PROBE_PT_3_Y 170
+  #define PROBE_PT_1_X 40
+  #define PROBE_PT_1_Y 0
+  #define PROBE_PT_2_X 90
+  #define PROBE_PT_2_Y 0
+  #define PROBE_PT_3_X 150
+  #define PROBE_PT_3_Y 160
 #endif
 
 /**
@@ -1266,12 +1277,12 @@
 // @section homing
 
 // The center of the bed is at (X=0, Y=0)
-//#define BED_CENTER_AT_0_0
+#define BED_CENTER_AT_70_80
 
 // Manually set the home position. Leave these undefined for automatic settings.
 // For DELTA this is the top-center of the Cartesian print volume.
-#define MANUAL_X_HOME_POS -40
-#define MANUAL_Y_HOME_POS -20
+//#define MANUAL_X_HOME_POS -40
+//#define MANUAL_Y_HOME_POS -20
 //#define MANUAL_Z_HOME_POS -5
 
 // Use "Z Safe Homing" to avoid homing with a Z probe outside the bed area.
@@ -1425,7 +1436,7 @@
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-//#define NOZZLE_PARK_FEATURE
+#define NOZZLE_PARK_FEATURE
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
@@ -1686,7 +1697,7 @@
 //
 // Note: Usually sold with a white PCB.
 //
-//#define REPRAP_DISCOUNT_SMART_CONTROLLER
+#define REPRAP_DISCOUNT_SMART_CONTROLLER
 
 //
 // Original RADDS LCD Display+Encoder+SDCardReader
@@ -1826,7 +1837,7 @@
 // RepRapDiscount FULL GRAPHIC Smart Controller
 // http://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
 //
-#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+//#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER // TODO: [SEM]
 
 //
 // ReprapWorld Graphical LCD
